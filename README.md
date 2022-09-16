@@ -32,11 +32,11 @@ $f options -title     "Demo_LinePlots" \
            -axisName  {x y}
 
 # Add serie
-#   '1'        : num serie
-    -dataX     : x coordinates
-    -dataY     : y coordinates
-    -lineStyle : color line serie (red RGB color here)
-    -name      : name line serie
+#    '1'        : num serie
+#    -dataX     : x coordinates
+#    -dataY     : y coordinates
+#    -lineStyle : color line serie (red RGB color here)
+#    -name      : name line serie
 $f series 1 -dataX {0 1 2 3 4} \
             -dataY {0 1 0.5 4 1} \
             -lineStyle {color {255 0 0}} \
