@@ -19,7 +19,7 @@ This project aims to generate `Tcl` bindings for [implot](https://github.com/epe
 ## Demo: 
 - See [demo](demo/) folder for others examples with `Dear ImGui` integration.
 
-```
+```tcl
 package require implottk
 
 # add frame with options width & height
