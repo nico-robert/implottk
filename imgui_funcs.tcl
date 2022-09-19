@@ -153,10 +153,10 @@ proc ::imgui::init {} {
         igInputText {CIMGUI_BOOL {
                 label     string
                 buf       {chars[buf_size] inout}
-                buf_size  {size_t {default 512}}
-                flags     {ImGuiInputTextFlags {default 0}}
+                buf_size  {size_t                                {default 512}}
+                flags     {ImGuiInputTextFlags                   {default 0}}
                 callback  {pointer.ImGuiInputTextCallback nullok {default NULL}}
-                user_data {pointer nullok {default NULL}}
+                user_data {pointer nullok                        {default NULL}}
             }
         }
         
@@ -187,7 +187,7 @@ proc ::imgui::init {} {
         igColorPicker4 {CIMGUI_BOOL {
                 label   string
                 col     {float[4] inout}
-                flags   {ImGuiColorEditFlags {default 0}}
+                flags   {ImGuiColorEditFlags  {default 0}}
                 ref_col {pointer.float nullok {default NULL}}
             }
         }
@@ -197,7 +197,7 @@ proc ::imgui::init {} {
                 filename     string
                 size_pixels  float
                 font_cfg     {pointer.ImFontConfig nullok {default NULL}}
-                glyph_ranges {pointer.ImWchar nullok {default NULL}}
+                glyph_ranges {pointer.ImWchar nullok      {default NULL}}
             }
         }
 
@@ -232,10 +232,10 @@ proc ::imgui::init {} {
         igDragFloat {CIMGUI_BOOL {
                 label   string
                 v       {float inout}
-                v_speed {float  {default 1.0}}
-                v_min   {float  {default 0.0}}
-                v_max   {float  {default 0.0}}
-                format  {string {default "%.3f"}}
+                v_speed {float            {default 1.0}}
+                v_min   {float            {default 0.0}}
+                v_max   {float            {default 0.0}}
+                format  {string           {default "%.3f"}}
                 flags   {ImGuiSliderFlags {default 0}}
             }
         }
@@ -244,6 +244,63 @@ proc ::imgui::init {} {
                 ctx pointer.ImGuiContext
             }
         }
+        
+        igCheckboxFlags_UintPtr {CIMGUI_BOOL {
+                label       string
+                flags       {uint inout}
+                flags_value uint
+            }
+        }
+        
+        igSliderInt {CIMGUI_BOOL {
+                label  string
+                v      {int inout}
+                v_min  int
+                v_max  int
+                format {string           {default "%.3f"}}
+                flags  {ImGuiSliderFlags {default 0}}
+            }
+        }
+   
+        igDragScalarN {CIMGUI_BOOL {
+                label      string
+                data_type  ImGuiDataType
+                p_data     pointer
+                components int
+                v_speed    {float               {default 1.0}}
+                p_min      {pointer nullok      {default NULL}}
+                p_max      {pointer nullok      {default NULL}}
+                format     {string nullifempty  {default ""}}
+                flags      {ImGuiSliderFlags    {default 0}}
+            }
+        }
+
+        igBulletText {void {
+                fmt string
+                ...
+            }
+        }
+
+        igSetDragDropPayload {CIMGUI_BOOL {
+                type string
+                data {pointer nullok}
+                sz   size_t
+                cond {ImGuiCond {default 0}}
+            }
+        }
+
+        igTextUnformatted {void {
+                text     string
+                text_end {string nullifempty {default ""}}
+            }
+        }
+
+        igAcceptDragDropPayload {{pointer.ImGuiPayload nullok} {
+                type  string
+                flags {ImGuiDragDropFlags {default 0}}
+            }
+        }
+        
     }
 }
 

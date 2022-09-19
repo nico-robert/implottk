@@ -19,19 +19,30 @@ proc ::implot::initprocFunc {} {
 proc ::implot::init {} {
     variable cbplot
     variable implot_funcs
+    
+    cffi::prototype function ImPlotPoint_getter void {
+        data {pointer unsafe}
+        idx int
+        point {pointer.ImPlotPoint unsafe}
+    }
 
     set implot_funcs {
 
-        ImPlot_CreateContext     {pointer.ImPlotContext {}}
-        ImPlot_GetCurrentContext {pointer.ImPlotContext {}}
-        ImPlot_SetCurrentContext {void                  {ctx pointer.ImPlotContext}}
-        ImPlot_SetImGuiContext   {void                  {ctx pointer.::imgui::ImGuiContext}}
-        ImPlot_EndPlot           {void                  {}}
+        ImPlot_CreateContext           {pointer.ImPlotContext {}}
+        ImPlot_GetCurrentContext       {pointer.ImPlotContext {}}
+        ImPlot_SetCurrentContext       {void                  {ctx pointer.ImPlotContext}}
+        ImPlot_SetImGuiContext         {void                  {ctx pointer.::imgui::ImGuiContext}}
+        ImPlot_EndPlot                 {void                  {}}
+        ImPlot_EndSubplots             {void                  {}}
+        ImPlot_EndDragDropSource       {void                  {}}
+        ImPlot_BeginDragDropTargetPlot {CIMGUI_BOOL           {}}
+        ImPlot_EndDragDropTarget       {void           {}}
+        
 
         ImPlot_BeginPlot {CIMGUI_BOOL {
                 title_id string
                 size     {struct.::imgui::ImVec2 {default {x -1 y -1}}}
-                flags    {ImPlotLineFlags        {default 0}}
+                flags    {ImPlotFlags            {default 0}}
             }
         }
         
@@ -69,14 +80,6 @@ proc ::implot::init {} {
             }
         }
         
-        ImPlot_SetupAxes {void {
-                x_label string
-                y_label string
-                x_flags int
-                y_flags int
-            }
-        }
-        
         ImPlot_SetupAxesLimits {void {
                 x_min double
                 x_max double
@@ -107,15 +110,7 @@ proc ::implot::init {} {
                 pOut {struct.::imgui::ImVec2 out}
             }
         }
-        
-        ImPlot_SetupAxes {void {
-                x_label {string nullifempty}
-                y_label {string nullifempty}
-                x_flags ImPlotAxisFlags
-                y_flags ImPlotAxisFlags
-            }
-        }
-        
+
         ImPlot_PushStyleColor_Vec4 {void {
                 idx ImPlotCol
                 col struct.::imgui::ImVec4
@@ -128,8 +123,8 @@ proc ::implot::init {} {
         }
         
         ImPlot_SetupAxes {void {
-                x_label string
-                y_label string
+                x_label {string nullifempty}
+                y_label {string nullifempty}
                 x_flags {ImPlotAxisFlags {default 0}}
                 y_flags {ImPlotAxisFlags {default 0}}
             }
@@ -169,14 +164,44 @@ proc ::implot::init {} {
                 count {int {default 1}}
             }
         }
+        
+        ImPlot_BeginSubplots {CIMGUI_BOOL {
+                title_id   string
+                rows       int
+                cols       int
+                size       struct.::imgui::ImVec2
+                flags      ImPlotSubplotFlags
+                row_ratios {pointer nullok {default NULL}}
+                col_ratios {pointer nullok {default NULL}}
+            }
+        }
+        
+        ImPlot_SampleColormap {void {
+                pOut {struct.::imgui::ImVec4 out}
+                t    float
+                cmap {ImPlotColormap {default -1}}
+            }
+        }
+
+        ImPlot_BeginDragDropSourceItem {CIMGUI_BOOL {
+                label_id string
+                flags    {imgui::ImGuiDragDropFlags {default 0}}
+            }
+        }
+
+        ImPlot_ItemIcon_Vec4 {void {
+                col struct.::imgui::ImVec4
+            }
+        }
+
+        ImPlot_GetLastItemColor {void {
+                pOut {struct.::imgui::ImVec4 out}
+            }
+        }
+        
     }
     
-    cffi::prototype function ImPlotPoint_getter void {
-        data {pointer unsafe}
-        idx int
-        point {pointer.ImPlotPoint unsafe}
-    }
 
-    set cbplot [cffi::callback new ImPlotPoint_getter cbFuncPlot struct.ImPlotPoint]
+    set cbplot [cffi::callback new ImPlotPoint_getter implottk::cbFuncPlot struct.ImPlotPoint]
     
 }
