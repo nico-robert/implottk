@@ -4,14 +4,27 @@
 namespace eval ::implottk {}
 
 proc ::implottk::cbFuncPlot {data idx pPoint} {
-    upvar 1 coords values ; # values is list in caller's context. Could be global also.
-    
-    lassign [lindex $values $idx] x y; # Co-ords of idx'th point
-    cffi::pointer safe $pPoint;
-    ImPlotPoint tonative $pPoint [list x $x y $y]
-    cffi::pointer dispose $pPoint
-    
-    return $pPoint
+    # callback for implot::PlotLineG 
+    #
+    # data    - pointer (NULL)
+    # idx     - index list coordinates
+    # pPoint  - struct data {x y}
+    #
+    # Returns ImPlotPoint struct
+
+    try {
+        upvar 1 coords values ; # values is list in caller's context. Could be global also.
+        
+        lassign [lindex $values $idx] x y; # Co-ords of idx'th point
+        cffi::pointer safe $pPoint;
+        implot::ImPlotPoint tonative $pPoint [list x $x y $y]
+        cffi::pointer dispose $pPoint
+
+        return $pPoint
+
+    } on error {result} {
+        return -code error $result
+    }
 }
 
 proc ::implottk::dataLine {num options} {

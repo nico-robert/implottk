@@ -224,13 +224,22 @@ proc ::implottk::implotFrameLoop {oow dc rc io p {focus 0}} {
         uplevel #1 $cmd
     }
     
-    # add commands implot
     if {[llength [$oow cmdPlot]]} {
-        if {[implot::BeginPlot [$oow title]]} {
+    # add commands implot without 'implot::BeginPlot'
+        if {[lsearch [$oow cmdPlot] {*implot::BeginPlot*}] == -1} {
+            if {[implot::BeginPlot [$oow title]]} {
+                foreach cmd [$oow cmdPlot] {
+                    uplevel #1 $cmd
+                }
+                implot::EndPlot
+            }
+        # add commands implot with 'implot::BeginPlot'
+        } elseif {[lsearch [$oow cmdPlot] {*implot::BeginPlot*}] > -1} {
             foreach cmd [$oow cmdPlot] {
                 uplevel #1 $cmd
             }
-            implot::EndPlot
+        } else {
+            error "PLot should start with 'BeginPlot' instruction..."
         }
     }
     
