@@ -71,3 +71,6 @@ If you like this project and want to contribute, you are welcome!
 
 ## Release:
 *  **15-09-2022** : 1.0b0
+*  **19-09-2022** : 1.0b1
+    - Add _SubplotsSizing_ + _SubplotItemSharing_ (drag & drop) demo.
+    - Cosmetic changes + adding `imgui` functions.

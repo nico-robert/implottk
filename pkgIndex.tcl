@@ -1,1 +1,1 @@
-package ifneeded implottk 1.0b0 [list source [file join $dir implottk.tcl]]
+package ifneeded implottk 1.0b1 [list source [file join $dir implottk.tcl]]

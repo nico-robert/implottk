@@ -3,6 +3,9 @@
 
 # Release:
 # 15-09-2022 : 1.0b0
+# 19-09-2022 : 1.0b1
+# - Add _SubplotsSizing_ + _SubplotItemSharing_ (drag & drop) demo.
+# - Cosmetic changes + adding `imgui` functions.
 
 package require Tcl 8.6
 package require Tk
@@ -45,7 +48,7 @@ source [file join $dir implottk_data.tcl]
 source [file join $dir implottk_utils.tcl]
 
 namespace eval ::implottk {
-    variable version 1.0b0
+    variable version 1.0b1
     variable dir $dir
 }
 
