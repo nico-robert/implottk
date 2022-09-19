@@ -1,4 +1,4 @@
-# Demo implot with all charts
+# Demo implot with all plots
 
 lappend auto_path [file dirname [file dirname [file dirname [info script]]]]
 
