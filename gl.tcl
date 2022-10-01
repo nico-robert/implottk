@@ -30,10 +30,18 @@ namespace eval ::gl {
         GL_TEXTURE_COORD_ARRAY  0x8078
     }
 
-    cffi::alias define GLenum {DWORD {enum glenum_}}
+    cffi::enum define glclearenum_ {
+        GL_COLOR_BUFFER_BIT   0x00004000
+        GL_DEPTH_BUFFER_BIT   0x00000100
+        GL_ACCUM_BUFFER_BIT   0x00000200
+        GL_STENCIL_BUFFER_BIT 0x00000400
+    }
+
+    cffi::alias define GLenum  {DWORD {enum glenum_}}
+    cffi::alias define GLCenum {DWORD {enum glclearenum_}}
 
     GL function glClearColor         void          {r float g float b float a float}
-    GL function glClear              void          {value int}
+    GL function glClear              void          {mask {GLCenum bitmask}}
     GL function glViewport           void          {x int y int width int height int}
     GL function glEnable             void          {cap GLenum}
     GL function glBlendFunc          void          {sfactor int dfactor int}
@@ -48,10 +56,10 @@ namespace eval ::gl {
     GL function glOrtho              void          {v1 float v2 float v3 float v4 float v5 float v6 float}
     GL function glEnd                void          {}
     GL function glFlush              void          {}
-    GL function wglCreateContext     pointer.HGLRC {win pointer.::win32::HDC}
-    GL function wglMakeCurrent       int           {hdc pointer.::win32::HDC hglrc pointer.HGLRC}
+    GL function wglCreateContext     pointer.HGLRC {win pointer.::user32::HDC}
+    GL function wglMakeCurrent       int           {hdc pointer.::user32::HDC hglrc pointer.HGLRC}
     GL function wglGetCurrentContext pointer.HGLRC {}
-    GL function wglShareLists        BOOL {hglrc1 pointer.HGLRC hglrc2 pointer.HGLRC}    
+    GL function wglShareLists        BOOL          {hglrc1 pointer.HGLRC hglrc2 pointer.HGLRC}    
     
 }
 
