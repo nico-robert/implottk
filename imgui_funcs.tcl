@@ -24,7 +24,6 @@ proc ::imgui::init {} {
         igShowUserGuide                    {void                          {}}
         igNewFrame                         {void                          {}}
         igEndFrame                         {void                          {}}
-        igText                             {void                          {fmt string}}
         igEnd                              {void                          {}}
         igRender                           {void                          {}}
         igGetIO                            {pointer.ImGuiIO               {}}
@@ -37,9 +36,15 @@ proc ::imgui::init {} {
         igGetTime                          {double                        {}}
         ImGui_ImplOpenGL3_NewFrame         {void                          {}}
         ImGui_ImplOpenGL3_Shutdown         {void                          {}}
+        ImGui_ImplGlfw_InitForOpenGL       {int                           {window pointer.::glfw3::GLFWwindow install_callbacks int}}
         ImGui_ImplWin32_NewFrame           {void                          {}}
         ImGui_ImplWin32_Shutdown           {void                          {}}
         ImGui_ImplWin32_EnableDpiAwareness {void                          {}}
+        igSetNextWindowFocus               {void                          {}}
+        igEndTable                         {void                          {}}
+        igTableHeadersRow                  {void                          {}}
+        igPopID                            {void                          {}}
+        ImGui_ImplGlfw_NewFrame            {void                          {}}
         
 
         igRenderPlatformWindowsDefault {void {
@@ -79,8 +84,8 @@ proc ::imgui::init {} {
                 v      {float inout}
                 v_min  float
                 v_max  float
-                format string
-                flags  {ImGuiSliderFlags {default ImGuiSliderFlags_None}} 
+                format {string           {default "%.3f"}}
+                flags  {ImGuiSliderFlags {default 0}} 
             }
         }
 
@@ -126,12 +131,12 @@ proc ::imgui::init {} {
         }
         
         ImGui_ImplWin32_Init {CIMGUI_BOOL {
-                hwnd pointer.::win32::HWND
+                hwnd pointer.::user32::HWND
             }
         }
         
         ImGui_ImplWin32_WndProcHandler {LRESULT {
-                hWnd   pointer.::win32::HWND
+                hWnd   pointer.::user32::HWND
                 msg    UINT
                 wParam WPARAM
                 lParam LPARAM
@@ -298,6 +303,50 @@ proc ::imgui::init {} {
         igAcceptDragDropPayload {{pointer.ImGuiPayload nullok} {
                 type  string
                 flags {ImGuiDragDropFlags {default 0}}
+            }
+        }
+        
+        igIsWindowFocused {CIMGUI_BOOL {
+                flags {ImGuiFocusedFlags {default 0}}
+            }
+        }
+        
+        igBeginTable {CIMGUI_BOOL {
+                str_id      string
+                column      int
+                flags       {ImGuiTableFlags bitmask {default 0}}
+                outer_size  {struct.ImVec2           {default {x 0 y 0}}}
+                inner_width {float                   {default 0.0}}
+            }
+        }
+        
+        igTableSetupColumn {void {
+                label                string
+                flags                {ImGuiTableColumnFlags {default 0}}
+                init_width_or_weight {float                 {default 0.0}}
+                user_id              {ImGuiID               {default 0}}
+            }
+        }
+        
+        igTableNextRow {void {
+                row_flags      {ImGuiTableRowFlags {default 0}}
+                min_row_height {float              {default 0.0}}
+            }
+        }
+        
+        igTableSetColumnIndex {CIMGUI_BOOL {
+                column_n int
+            }
+        }
+        
+        igText {void {
+                fmt string
+                ...
+            }
+        }
+        
+        igPushID_Int {void {
+                int_id int
             }
         }
         

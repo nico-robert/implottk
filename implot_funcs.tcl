@@ -36,13 +36,13 @@ proc ::implot::init {} {
         ImPlot_EndSubplots             {void                  {}}
         ImPlot_EndDragDropSource       {void                  {}}
         ImPlot_BeginDragDropTargetPlot {CIMGUI_BOOL           {}}
-        ImPlot_EndDragDropTarget       {void           {}}
+        ImPlot_EndDragDropTarget       {void                  {}}
         
 
         ImPlot_BeginPlot {CIMGUI_BOOL {
                 title_id string
                 size     {struct.::imgui::ImVec2 {default {x -1 y -1}}}
-                flags    {ImPlotFlags            {default 0}}
+                flags    {ImPlotFlags bitmask    {default 0}}
             }
         }
         
@@ -118,7 +118,7 @@ proc ::implot::init {} {
         }
 
         ImPlot_PopStyleColor {void {
-                count int
+                count {int {default 1}}
             }
         }
         
@@ -133,6 +133,12 @@ proc ::implot::init {} {
         ImPlot_PushStyleVar_Float {void {
                 idx ImPlotStyleVar
                 val float
+            }
+        }
+        
+        ImPlot_PushStyleVar_Vec2 {void {
+                idx ImPlotStyleVar
+                val struct.::imgui::ImVec2
             }
         }
         
@@ -154,6 +160,18 @@ proc ::implot::init {} {
                 ys1      pointer.double
                 ys2      pointer.double
                 count    int
+                flags    {ImPlotShadedFlags {default 0}}
+                offset   {int {default 0}}
+                stride   {int {default 8}}
+            }
+        }
+        
+        ImPlot_PlotShaded_doublePtrdoublePtrInt {void {
+                label_id string
+                xs       pointer.double
+                ys       pointer.double
+                count    int
+                yref     double
                 flags    {ImPlotShadedFlags {default 0}}
                 offset   {int {default 0}}
                 stride   {int {default 8}}
@@ -196,6 +214,46 @@ proc ::implot::init {} {
 
         ImPlot_GetLastItemColor {void {
                 pOut {struct.::imgui::ImVec4 out}
+            }
+        }
+        
+        ImPlot_PushColormap_PlotColormap {void {
+                cmap ImPlotColormap
+            }
+        }
+        
+        ImPlot_PopColormap {void {
+                count {int {default 1}}
+            }
+        }
+        
+        ImPlot_GetColormapColor {void {
+                pOut {struct.::imgui::ImVec4 out}
+                idx  int
+                cmap {ImPlotColormap {default -1}}
+            }
+        }
+        
+        ImPlot_PlotStems_doublePtrdoublePtr {void {
+                label_id string
+                xs       pointer.double
+                ys       pointer.double
+                count    int
+                ref      {double {default 0}}
+                flags    {ImPlotStemsFlags {default 0}}
+                offset   {int {default 0}}
+                stride   {int {default 8}}
+            }
+        }
+        
+        ImPlot_DragRect {CIMGUI_BOOL {
+                id    int
+                x_min {double inout}
+                y_min {double inout}
+                x_max {double inout}
+                y_max {double inout}
+                col   struct.::imgui::ImVec4
+                flags {ImPlotDragToolFlags {default 0}}
             }
         }
         
