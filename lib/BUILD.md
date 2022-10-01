@@ -1,8 +1,8 @@
 ## Build instructions  :
 **Note** : _First of all I’m not an expert on compilation, and I discovered what a _CMakeLists.txt_ file was with this project, so if you have any problems, please don’t call me_ :wink:. 
 
-To use `implotTk`, you need to have a `c-api wrapper` , you can find [here](https://github.com/cimgui/cimgui) for `Dear imgui` and [here](https://github.com/cimgui/cimplot) for `implot`.  
-To works `Dear imgui` and `implot` use backends, my choice was on :
+To use `implotTk`, you need to have a `c-api wrapper` , you can find [here](https://github.com/cimgui/cimgui) for `Dear imgui` and [here](https://github.com/cimgui/cimplot) for `Implot`.  
+To works `Dear imgui` and `Implot` use backends, my choice was on :
 -  `OpenGL` and `Win32`
 
 If like me the compilation is a _desert_, I advise you to use [LuaJIT-ImGui](https://github.com/sonoro1234/LuaJIT-ImGui) 
