@@ -351,7 +351,7 @@ proc ::implottk::implotFrame {w args} {
     #        -width  : size frame
     #        -height : size frame
     #
-    # Returns frame object
+    # Returns frame object 
 
     foreach {key value} $args {
         if {$value eq ""} {
