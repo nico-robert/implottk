@@ -17,7 +17,6 @@ proc gettercb {l} {
 lappend auto_path [file dirname [file dirname [file dirname [info script]]]]
 
 package req implottk
-
 catch {console show}
 
 set len 100000
