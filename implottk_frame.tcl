@@ -84,7 +84,7 @@ namespace eval ::implottk {
                                 windowBackground {dict set _options ImGuiCol_WindowBg $valuecolor}
                                 popupBackground  {dict set _options ImGuiCol_PopupBg  $valuecolor}
                                 text             {dict set _options ImGuiCol_Text     $valuecolor}
-                                default  {error "Unknown subkey '$keycolor' specified"}
+                                default          {error "Unknown subkey '$keycolor' specified"}
                             }
                         }
                         
@@ -116,7 +116,7 @@ namespace eval ::implottk {
                                 axisText         {dict set _options ImPlotCol_AxisText   $valuecolor}
                                 legendBackground {dict set _options ImPlotCol_LegendBg   $valuecolor}
                                 legendText       {dict set _options ImPlotCol_LegendText $valuecolor}
-                                default  {error "Unknown subkey '$keycolor' specified"}
+                                default          {error "Unknown subkey '$keycolor' specified"}
                             }
                         }
                         
@@ -183,10 +183,21 @@ namespace eval ::implottk {
 }
 
 proc ::implottk::implotFrameLoop {oow dc rc io p {focus 0}} {
+    # Event loop implottk
+    #
+    # oow   - frame object
+    # dc    - handle to a device context
+    # rc    - opengl context
+    # io    - struct imgui
+    # p     - frame pointer
+    # focus - boolean value to valid or not win32 focus
+    #
+    # Returns nothing
+    variable id
     
     if {$focus} {
         update idletasks
-        win32::SetFocus $p
+        user32::SetFocus $p
     }
 
     imgui::ImplOpenGL3_NewFrame
@@ -224,8 +235,9 @@ proc ::implottk::implotFrameLoop {oow dc rc io p {focus 0}} {
         uplevel #1 $cmd
     }
     
+    # add commands implot
     if {[llength [$oow cmdPlot]]} {
-    # add commands implot without 'implot::BeginPlot'
+        # add commands implot without 'implot::BeginPlot'
         if {[lsearch [$oow cmdPlot] {*implot::BeginPlot*}] == -1} {
             if {[implot::BeginPlot [$oow title]]} {
                 foreach cmd [$oow cmdPlot] {
@@ -257,7 +269,7 @@ proc ::implottk::implotFrameLoop {oow dc rc io p {focus 0}} {
 
     gl::glViewport   0 0 [winfo width $w] [winfo height $w]
     gl::glClearColor 1.0 1.0 1.0 0.0
-    gl::glClear      0x00004000
+    gl::glClear      {GL_COLOR_BUFFER_BIT GL_DEPTH_BUFFER_BIT}
 
     imgui::ImplOpenGL3_RenderDrawData [imgui::GetDrawData]
     
@@ -271,13 +283,23 @@ proc ::implottk::implotFrameLoop {oow dc rc io p {focus 0}} {
         imgui::UpdatePlatformWindows
         imgui::RenderPlatformWindowsDefault
     }
-    
+        
     gdi::SwapBuffers $dc
 
-    after 10 [list implottk::implotFrameLoop $oow $dc $rc $io $p]
+    set id($oow) [after 10 [list implottk::implotFrameLoop $oow $dc $rc $io $p]]
+
+    return {}
 }
 
 proc ::implottk::implotFrameResize {w h dc rc} {
+    # Resize frame when this is configured.
+    #
+    # w  - width
+    # h  - height
+    # dc - handle to a device context
+    # rc - opengl context
+    #
+    # Returns nothing
 
     update idletasks
 
@@ -286,17 +308,50 @@ proc ::implottk::implotFrameResize {w h dc rc} {
     gl::glFlush
     gdi::SwapBuffers $dc
 
+    return {}
+
 }
 
-proc ::implottk::implotFrameDestroy {ctx} {
+proc ::implottk::implotCancel {oow} {
+    # Cancel event loop
+    #
+    # oow - frame object
+    #
+    # Returns nothing
+    variable id
+
+    after cancel $id($oow)
+
+    return {}
+}
+
+proc ::implottk::implotFrameDestroy {oow ctx} {
+    # Destroy frame
+    #
+    # oow - frame object
+    # ctx - imgui context
+    #
+    # Returns nothing
+
+    # cancel before destroy
+    implottk::implotCancel $oow
 
     imgui::ImplOpenGL3_Shutdown
     imgui::ImplWin32_Shutdown
-    imgui::DestroyContext
+    imgui::DestroyContext $ctx
 
+    return {}
 }
 
 proc ::implottk::implotFrame {w args} {
+    # Make frame implot + imgui
+    #
+    # w - frame Tk
+    # args - see description below
+    #        -width  : size frame
+    #        -height : size frame
+    #
+    # Returns frame object 
 
     foreach {key value} $args {
         if {$value eq ""} {
@@ -311,6 +366,7 @@ proc ::implottk::implotFrame {w args} {
     }
    
     # create frame
+    # I’m not sure if -container's flag is useful...
     frame $w -container 1 \
              -width      [dict get $::implottk::imFrame -width] \
              -height     [dict get $::implottk::imFrame -height] \
@@ -318,11 +374,11 @@ proc ::implottk::implotFrame {w args} {
 
     set oow implottk::$w
   
-    set p [cffi::pointer make [winfo id $w] ::win32::HWND]
+    set p [cffi::pointer make [winfo id $w] ::user32::HWND]
     cffi::pointer safe $p
     
     # retrieves a handle to a device context
-    set dc [win32::GetDC $p]
+    set dc [user32::GetDC $p]
     
     gdi::setPixelFormat $p $dc
     
@@ -352,14 +408,15 @@ proc ::implottk::implotFrame {w args} {
     
     # Callback message imgui -> Windows
     if {$::tcl_platform(machine) eq "amd64"} {
-        win32::SetWindowLongPtrA $p GWL_WNDPROC $win32::cb
+        user32::SetWindowLongPtrA $p GWL_WNDPROC $user32::cb
     } else {
-        win32::SetWindowLongA $p GWL_WNDPROC $win32::cb
+        user32::SetWindowLongA $p GWL_WNDPROC $user32::cb
     }
     
     bind $w <Configure> [list implottk::implotFrameResize  %w %h $dc $rc]
     bind $w <Map>       [list implottk::implotFrameLoop    $oow $dc $rc $io $p 1]
-    bind $w <Destroy>   [list implottk::implotFrameDestroy $ctx]
+    bind $w <Unmap>     [list implottk::implotCancel       $oow]
+    bind $w <Destroy>   [list implottk::implotFrameDestroy $oow $ctx]
 
     return [implottk::widget create $oow]
     
