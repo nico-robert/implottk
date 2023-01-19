@@ -5,9 +5,9 @@ namespace eval ::gdi {
 
     cffi::Wrapper create GDI32 gdi32.dll
 
-    GDI32 function ChoosePixelFormat int {hdc pointer.::win32::HDC ppfd pointer.PIXELFORMATDESCRIPTOR}
-    GDI32 function SetPixelFormat    int {hdc pointer.::win32::HDC format int ppfd pointer.PIXELFORMATDESCRIPTOR}
-    GDI32 function SwapBuffers       int {hdc pointer.::win32::HDC}
+    GDI32 function ChoosePixelFormat int {hdc pointer.::user32::HDC ppfd pointer.PIXELFORMATDESCRIPTOR}
+    GDI32 function SetPixelFormat    int {hdc pointer.::user32::HDC format int ppfd pointer.PIXELFORMATDESCRIPTOR}
+    GDI32 function SwapBuffers       int {hdc pointer.::user32::HDC}
 
     cffi::enum define dwFlags_ {
         PFD_DRAW_TO_WINDOW      0x00000004
