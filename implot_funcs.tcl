@@ -75,8 +75,8 @@ proc ::implot::init {} {
                 ys       pointer.double
                 count    int
                 flags    {ImPlotLineFlags {default 0}}
-                offset   {int {default 0}}
-                stride   {int {default 8}}
+                offset   {int             {default 0}}
+                stride   {int             {default 8}}
             }
         }
         
@@ -147,10 +147,10 @@ proc ::implot::init {} {
                 xs       pointer.double
                 ys       pointer.double
                 count    int
-                yref     {double  {default 0}}
+                yref     {double            {default 0}}
                 flags    {ImPlotShadedFlags {default 0}}
-                offset   {int {default 0}}
-                stride   {int {default 8}}
+                offset   {int               {default 0}}
+                stride   {int               {default 8}}
             }
         }
         
@@ -161,8 +161,8 @@ proc ::implot::init {} {
                 ys2      pointer.double
                 count    int
                 flags    {ImPlotShadedFlags {default 0}}
-                offset   {int {default 0}}
-                stride   {int {default 8}}
+                offset   {int               {default 0}}
+                stride   {int               {default 8}}
             }
         }
         
@@ -173,8 +173,8 @@ proc ::implot::init {} {
                 count    int
                 yref     double
                 flags    {ImPlotShadedFlags {default 0}}
-                offset   {int {default 0}}
-                stride   {int {default 8}}
+                offset   {int               {default 0}}
+                stride   {int               {default 8}}
             }
         }
 
@@ -239,10 +239,10 @@ proc ::implot::init {} {
                 xs       pointer.double
                 ys       pointer.double
                 count    int
-                ref      {double {default 0}}
-                flags    {ImPlotStemsFlags {default 0}}
-                offset   {int {default 0}}
-                stride   {int {default 8}}
+                ref      {double            {default 0}}
+                flags    {ImPlotStemsFlags  {default 0}}
+                offset   {int               {default 0}}
+                stride   {int               {default 8}}
             }
         }
         
