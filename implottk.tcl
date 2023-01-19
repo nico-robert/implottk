@@ -6,6 +6,10 @@
 # 19-09-2022 : 1.0b1
 # - Add _SubplotsSizing_ + _SubplotItemSharing_ (drag & drop) demo.
 # - Cosmetic changes + adding `imgui` functions.
+# 01-10-2022 : 1.0b2
+# - Add examples.
+# - Fix bug when my frame was mapped or unmapped.
+# - Rename win32.tcl file by user32.tcl
 
 package require Tcl 8.6
 package require Tk
@@ -29,13 +33,16 @@ source [file join $dir implot_structs.tcl]
 source [file join $dir implot_funcs.tcl]
 
 # user32
-source [file join $dir win32.tcl]
+source [file join $dir user32.tcl]
 
 # wingdi
 source [file join $dir wingdi.tcl]
 
 # opengl
 source [file join $dir gl.tcl]
+
+# glfw3 (work in progress...)
+# source [file join $dir glfw3.tcl]
 
 # directX (work in progress...)
 # source [file join $dir dxgi.tcl]
@@ -48,7 +55,7 @@ source [file join $dir implottk_data.tcl]
 source [file join $dir implottk_utils.tcl]
 
 namespace eval ::implottk {
-    variable version 1.0b1
+    variable version 1.0b2
     variable dir $dir
 }
 

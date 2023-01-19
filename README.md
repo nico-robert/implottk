@@ -1,12 +1,12 @@
 # implotTk
-This project aims to generate `Tcl` bindings for [implot](https://github.com/epezent/implot).
+This project aims to generate `Tcl` bindings for [Implot](https://github.com/epezent/implot).
 
 > **Warning**
 > This project is in beta state, **anything** may change... 
 
 ## Dependencies:
 - [Tcl cffi](https://cffi.magicsplat.com) >= 1.1
-- [Dear Imgui](https://github.com/ocornut/imgui) 1.88 & [implot](https://github.com/epezent/implot) (see [build](lib/BUILD.md))
+- [Dear Imgui](https://github.com/ocornut/imgui) 1.88 & [Implot](https://github.com/epezent/implot) (see [build](lib/BUILD.md))
 
 ## Platform(s):
 - Windows(x64/32).
@@ -74,3 +74,7 @@ If you like this project and want to contribute, you are welcome!
 *  **19-09-2022** : 1.0b1
     - Add _SubplotsSizing_ + _SubplotItemSharing_ (drag & drop) demo.
     - Cosmetic changes + adding `imgui` functions.
+*  **01-10-2022** : 1.0b2
+    - Add examples.
+    - Fix bug when my frame was mapped or unmapped.
+    - Rename `win32.tcl` file by `user32.tcl`
